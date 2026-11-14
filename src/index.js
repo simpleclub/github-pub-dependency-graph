@@ -32,7 +32,7 @@ async function main() {
     const roots = deps.packages.filter((p) => p.kind === 'root').map((p) => p.name);
     const dirs = workspaceDirs(dir, roots);
     const pubspecPaths = Object.fromEntries(roots.map((n) => [n, posix(path.relative(workspace, path.join(dirs[n], 'pubspec.yaml')))]));
-    const result = buildManifests(deps, { lockfilePath, pubspecPaths });
+    const result = buildManifests(deps, { lockfilePath, pubspecPaths, includeSdk: input('include-sdk-packages') === 'true' });
     for (const [file, m] of Object.entries(result)) {
       const values = Object.values(m.resolved);
       console.log(`${file}: ${values.filter((v) => v.relationship === 'direct').length} direct, ${values.filter((v) => v.relationship === 'indirect').length} indirect`);

@@ -57,6 +57,16 @@ test('a package reachable from runtime and dev dependencies gets scope runtime',
   assert.equal(v['pkg:pub/http_parser@4.1.2'], 'indirect/runtime');
 });
 
+test('includeSdk reports SDK packages with the Flutter version and parents their dependencies', () => {
+  const m = buildManifests(deps(), { ...paths, includeSdk: true })['packages/app/pubspec.yaml'];
+  const flutter = 'pkg:pub/flutter@3.29.0';
+  assert.deepEqual(view(m)[flutter], 'direct/runtime');
+  assert.deepEqual(view(m)['pkg:pub/flutter_test@3.29.0'], 'direct/development');
+  assert.deepEqual(m.resolved[flutter].dependencies, ['pkg:pub/collection@1.19.1', 'pkg:pub/meta@1.16.0', 'pkg:pub/vector_math@2.1.4']);
+  assert.deepEqual(m.resolved['pkg:pub/flutter_test@3.29.0'].dependencies, [flutter]);
+  assert.equal(view(m)['pkg:pub/vector_math@2.1.4'], 'indirect/runtime');
+});
+
 test('requires Dart 3.6+ output', () => {
   const d = deps();
   for (const p of d.packages) delete p.directDependencies;

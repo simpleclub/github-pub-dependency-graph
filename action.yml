@@ -13,6 +13,11 @@ inputs:
   token:
     description: "Token with `contents: write` permission."
     default: ${{ github.token }}
+  include-sdk-packages:
+    description: >-
+      Also report SDK packages (flutter, flutter_test, ...), versioned with the Flutter SDK version,
+      so the packages they pull in get them as parent instead of looking like direct dependencies.
+    default: 'false'
   dry-run:
     description: Only write the snapshot file, do not submit it.
     default: 'false'

@@ -49,6 +49,13 @@ test('dry run: runs pub get + pub deps with flutter and writes the snapshot', { 
   assert.match(fs.readFileSync(path.join(tmp, 'output'), 'utf8'), /snapshot-path<<EOF_.*\n.*pub-dependency-snapshot\.json\n/);
 });
 
+test('include-sdk-packages input', { skip: process.platform === 'win32' }, () => {
+  const { r, tmp } = runAction({ 'INPUT_DRY-RUN': 'true', 'INPUT_INCLUDE-SDK-PACKAGES': 'true' });
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  const snapshot = JSON.parse(fs.readFileSync(path.join(tmp, 'pub-dependency-snapshot.json'), 'utf8'));
+  assert.ok('pkg:pub/flutter@3.29.0' in snapshot.manifests['packages/app/pubspec.yaml'].resolved);
+});
+
 test('pull requests use the head commit and branch', { skip: process.platform === 'win32' }, () => {
   const event = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pubgraph-')), 'event.json');
   fs.writeFileSync(event, JSON.stringify({ pull_request: { head: { sha: 'b'.repeat(40), ref: 'feature' } } }));

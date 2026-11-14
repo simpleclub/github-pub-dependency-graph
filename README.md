@@ -44,6 +44,7 @@ Requires Dart 3.6 / Flutter 3.27 or newer and committed `pubspec.lock` files.
 |---|---|---|
 | `working-directory` | `.` | Directory to search for `pubspec.lock` files. |
 | `token` | `${{ github.token }}` | Token with `contents: write`. |
+| `include-sdk-packages` | `false` | Also report SDK packages (`flutter`, `flutter_test`, …), see below. |
 | `dry-run` | `false` | Only write the snapshot file, don't submit it. |
 
 ### Outputs
@@ -70,8 +71,11 @@ Flutter SDK and `dart` otherwise.
   direct dependencies of the package that uses them.
 - **Workspace packages** aren't reported in each other's manifests; each one lists its own
   dependencies.
-- **SDK packages** (`flutter`, `flutter_test`, …) aren't reported, but the packages they pull
-  in (e.g. `vector_math`) are, as `indirect`.
+- **SDK packages** (`flutter`, `flutter_test`, …) aren't reported by default, but the packages
+  they pull in (e.g. `vector_math`) are, as `indirect`. Because they have no reported parent,
+  GitHub's SBOM export links them to the repository as if they were direct. With
+  `include-sdk-packages: true` the SDK packages are reported too (e.g.
+  `pkg:pub/flutter@3.27.0`, using the Flutter SDK version), so those packages hang off them.
 - **Package URLs** are `pkg:pub/<name>@<version>`.
 
 On pull requests the snapshot is attributed to the head commit and branch, so

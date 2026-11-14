@@ -67,11 +67,16 @@ export const purl = (p) => `pkg:pub/${p.name}@${encodeURIComponent(p.version)}`;
  * - direct = declared by the package; indirect = everything reachable from those.
  * - runtime = reachable from `dependencies`; development = only from `dev_dependencies`.
  * - Path packages are your own code: not reported, their dependencies count as direct.
- * - SDK packages (flutter, flutter_test, ...) are not reported, their dependencies are (indirect).
+ * - SDK packages (flutter, flutter_test, ...) are only reported with `includeSdk`, versioned with the
+ *   Flutter SDK version. Otherwise their dependencies are reported as indirect, without a parent.
  * - Other workspace packages are not reported; their dependencies are in their own manifest.
  */
-export function buildManifests(deps, { lockfilePath, pubspecPaths }) {
-  const byName = new Map(deps.packages.map((p) => [p.name, p]));
+export function buildManifests(deps, { lockfilePath, pubspecPaths, includeSdk = false }) {
+  const flutterVersion = deps.sdks?.find((s) => s.name === 'Flutter')?.version;
+  const byName = new Map(deps.packages.map((p) => [
+    p.name,
+    p.source === 'sdk' && flutterVersion ? { ...p, version: flutterVersion } : p,
+  ]));
   const roots = deps.packages.filter((p) => p.kind === 'root');
   if (roots.some((r) => !Array.isArray(r.directDependencies))) {
     throw new Error('`pub deps --json` output has no "directDependencies"; Dart 3.6 (Flutter 3.27) or newer is required.');
@@ -84,7 +89,7 @@ export function buildManifests(deps, { lockfilePath, pubspecPaths }) {
     const add = (name, relationship, scope) => {
       const pkg = byName.get(name);
       if (!pkg || pkg.kind === 'root') return;
-      if (pkg.source === 'path' || pkg.source === 'sdk') {
+      if (pkg.source === 'path' || (pkg.source === 'sdk' && !includeSdk)) {
         const key = `${name}:${relationship}:${scope}`;
         if (visited.has(key)) return;
         visited.add(key);
