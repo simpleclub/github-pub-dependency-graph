@@ -1,0 +1,9 @@
+name: ws_root
+publish_to: none
+environment:
+  sdk: ^3.6.0
+workspace:
+  - packages/app
+  - packages/tool
+dev_dependencies:
+  lints: ^5.0.0

@@ -1,0 +1,22 @@
+{
+  "root": "ws_root",
+  "packages": [
+    {"name": "ws_root", "version": "0.0.0", "kind": "root", "source": "root", "dependencies": ["lints"], "directDependencies": [], "devDependencies": ["lints"], "dependencyConstraints": {"lints": "^5.0.0"}},
+    {"name": "tool", "version": "0.0.0", "kind": "root", "source": "root", "dependencies": ["args", "app"], "directDependencies": ["args", "app"], "devDependencies": [], "dependencyConstraints": {}},
+    {"name": "app", "version": "0.0.0", "kind": "root", "source": "root", "dependencies": ["flutter", "http", "local_lib", "git_pkg", "flutter_test", "mocktail"], "directDependencies": ["flutter", "http", "local_lib", "git_pkg"], "devDependencies": ["flutter_test", "mocktail"], "dependencyConstraints": {}},
+    {"name": "args", "version": "2.6.0", "kind": "transitive", "source": "hosted", "dependencies": [], "directDependencies": [], "dependencyConstraints": {}},
+    {"name": "flutter", "version": "0.0.0", "kind": "transitive", "source": "sdk", "dependencies": ["vector_math", "meta", "collection"], "directDependencies": ["vector_math", "meta", "collection"], "dependencyConstraints": {}},
+    {"name": "flutter_test", "version": "0.0.0", "kind": "transitive", "source": "sdk", "dependencies": ["flutter"], "directDependencies": ["flutter"], "dependencyConstraints": {}},
+    {"name": "http", "version": "1.6.0", "kind": "transitive", "source": "hosted", "dependencies": ["http_parser", "meta"], "directDependencies": ["http_parser", "meta"], "dependencyConstraints": {}},
+    {"name": "http_parser", "version": "4.1.2", "kind": "transitive", "source": "hosted", "dependencies": ["collection"], "directDependencies": ["collection"], "dependencyConstraints": {}},
+    {"name": "local_lib", "version": "0.0.0", "kind": "transitive", "source": "path", "dependencies": ["collection"], "directDependencies": ["collection"], "dependencyConstraints": {}},
+    {"name": "git_pkg", "version": "0.3.0+1", "kind": "transitive", "source": "git", "dependencies": ["meta"], "directDependencies": ["meta"], "dependencyConstraints": {}},
+    {"name": "lints", "version": "5.1.1", "kind": "dev", "source": "hosted", "dependencies": [], "directDependencies": [], "dependencyConstraints": {}},
+    {"name": "mocktail", "version": "1.0.4", "kind": "transitive", "source": "hosted", "dependencies": ["collection", "meta"], "directDependencies": ["collection", "meta"], "dependencyConstraints": {}},
+    {"name": "collection", "version": "1.19.1", "kind": "transitive", "source": "hosted", "dependencies": [], "directDependencies": [], "dependencyConstraints": {}},
+    {"name": "meta", "version": "1.16.0", "kind": "transitive", "source": "hosted", "dependencies": [], "directDependencies": [], "dependencyConstraints": {}},
+    {"name": "vector_math", "version": "2.1.4", "kind": "transitive", "source": "hosted", "dependencies": [], "directDependencies": [], "dependencyConstraints": {}}
+  ],
+  "sdks": [{"name": "Dart", "version": "3.7.0"}, {"name": "Flutter", "version": "3.29.0"}],
+  "executables": []
+}

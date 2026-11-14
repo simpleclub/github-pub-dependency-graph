@@ -1,0 +1,28 @@
+name: Pub Dependency Graph
+description: >-
+  Submits Dart & Flutter dependencies to GitHub's dependency graph with the full dependency tree,
+  direct/indirect relationships and runtime/development scopes, based on `pub deps --json`.
+branding:
+  icon: git-merge
+  color: blue
+
+inputs:
+  working-directory:
+    description: Directory to search for pubspec.lock files.
+    default: .
+  token:
+    description: Token with `contents: write` permission.
+    default: ${{ github.token }}
+  dry-run:
+    description: Only write the snapshot file, do not submit it.
+    default: 'false'
+
+outputs:
+  snapshot-path:
+    description: Path of the generated snapshot JSON.
+  snapshot-id:
+    description: Id of the submitted snapshot.
+
+runs:
+  using: node24
+  main: src/index.js

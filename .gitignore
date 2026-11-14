@@ -1,0 +1,5 @@
+node_modules/
+pub-dependency-snapshot.json
+.DS_Store
+
+.idea/

@@ -1,0 +1,25 @@
+name: app
+description: >-
+  A Flutter app used as a test fixture
+  for the action.
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ^3.6.0
+  flutter: ">=3.27.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0 # comment
+  local_lib:
+    path: ../local_lib
+  git_pkg:
+    git:
+      url: https://github.com/example/git_pkg.git
+      ref: main
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: '^1.0.0'
+flutter:
+  uses-material-design: true

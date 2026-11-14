@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm test
+
+  # Runs the action against a real Dart workspace (dry run) and checks the result.
+  dart-workspace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - name: Create a Dart workspace
+        run: |
+          mkdir -p sample/pkgs/app/bin
+          cd sample
+          printf 'name: sample_root\nenvironment:\n  sdk: ^3.6.0\nworkspace:\n  - pkgs/app\ndev_dependencies:\n  lints: ^5.0.0\n' > pubspec.yaml
+          printf 'name: app\nresolution: workspace\nenvironment:\n  sdk: ^3.6.0\ndependencies:\n  http: ^1.2.0\n' > pkgs/app/pubspec.yaml
+          echo 'void main() {}' > pkgs/app/bin/app.dart
+          dart pub get
+      - id: graph
+        uses: ./
+        with:
+          working-directory: sample
+          dry-run: true
+      - name: Check the snapshot
+        run: |
+          f="${{ steps.graph.outputs.snapshot-path }}"
+          jq '.manifests | map_values(.resolved | map_values("\(.relationship)/\(.scope)"))' "$f"
+          jq -e '.manifests["sample/pubspec.lock"].resolved | to_entries | map(.key | split("@")[0]) == ["pkg:pub/lints"]' "$f"
+          jq -e '.manifests["sample/pkgs/app/pubspec.yaml"].resolved | to_entries | map(select(.value.relationship == "direct") | .key | split("@")[0]) == ["pkg:pub/http"]' "$f"
+          jq -e '.manifests["sample/pkgs/app/pubspec.yaml"].resolved | to_entries | map(select(.key | startswith("pkg:pub/http_parser@")))[0].value.relationship == "indirect"' "$f"

@@ -33,7 +33,7 @@ jobs:
       - uses: subosito/flutter-action@v2   # or dart-lang/setup-dart@v1
         with:
           channel: stable
-      - uses: <owner>/github-pub-dependency-graph@v1
+      - uses: simpleclub/github-pub-dependency-graph@v1
 ```
 
 Requires Dart 3.6 / Flutter 3.27 or newer and committed `pubspec.lock` files.

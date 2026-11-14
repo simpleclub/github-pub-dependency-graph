@@ -1,0 +1,11 @@
+{
+  "name": "github-pub-dependency-graph",
+  "version": "1.0.0",
+  "description": "GitHub Action that submits Dart/Flutter dependencies to the GitHub dependency graph, based on `pub deps --json`",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  }
+}

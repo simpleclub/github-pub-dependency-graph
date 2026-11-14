@@ -1,0 +1,5 @@
+name: local_lib
+environment:
+  sdk: ^3.6.0
+dependencies:
+  collection: ^1.18.0
